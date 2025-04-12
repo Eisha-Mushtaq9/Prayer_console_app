@@ -1,0 +1,44 @@
+import requests
+from datetime import datetime
+
+BASE_URL="https://api.aladhan.com/v1"
+
+#functions to get prayers time
+
+def prayers_time(city,country):
+    today = datetime.now().strftime('%d-%m-%Y')  # Format: dd-mm-yyyy
+    response=requests.get(f"{BASE_URL}/timingsByCity?city={city}&country={country}&method=1&date={today}")
+    if response.status_code ==200:
+        data = response.json()['data']['timings']
+        print(f"\n Prayer Times for {city.title()}, {country.title()} on {today}\n")
+        print(f"Fajr:     {data['Fajr']}")
+        print(f"Sunrise:  {data['Sunrise']}")
+        print(f"Dhuhr:    {data['Dhuhr']}")
+        print(f"Asr:      {data['Asr']}")
+        print(f"Maghrib:  {data['Maghrib']}")
+        print(f"Isha:     {data['Isha']}")
+    else:
+        print("Error in fetching prayers time.")
+
+#main menu
+
+def main():
+    while True:
+        print("\n Prayer Times App")
+        print("1. Get Today's Prayer Times")
+        print("2. Exit")
+        choice = input("Enter your choice: ")
+    
+        if choice == "1":
+            city = input("Enter your city: ")
+            country = input("Enter your country: ")
+            prayers_time(city, country)
+        elif choice == "2":
+            print("JazakAllah!")
+            break
+        else:
+            print("Invalid choice, please try again.")
+
+# Run the App
+if __name__ == "__main__":
+    main()
